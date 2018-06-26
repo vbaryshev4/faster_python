@@ -27,4 +27,4 @@ def generate_test_file(length):
 
 
 if __name__ == "__main__":
-    generate_test_file(100000)
+    generate_test_file(100000000)
