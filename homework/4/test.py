@@ -18,18 +18,17 @@ def run_test(data, code_type):
 
     elif code_type == 'decode':
         for pair in data:
-            print(pair[1], decode(pair[1]))
-            # res = decode(pair[1])
-            # if res == pair[0]:
-            #     lst = result['True']
-            #     lst.append(pair)
-            #     result['True'] = lst
-            # else:
-            #     lst = result['False']
-            #     lst.append(pair)
-            #     result['False'] = lst
+            res = decode(pair[1])
+            if res == pair[0]:
+                lst = result['True']
+                lst.append(pair)
+                result['True'] = lst
+            else:
+                lst = result['False']
+                lst.append(pair)
+                result['False'] = lst
 
-    return result
+    return [code_type, result]
 
 
 if __name__ == '__main__':
@@ -46,6 +45,6 @@ if __name__ == '__main__':
     result = run_test(test_data, 'encode')
     print(result)
 
-    # result = run_test(test_data, 'decode')
-    # print(result)
+    result = run_test(test_data, 'decode')
+    print(result)
 

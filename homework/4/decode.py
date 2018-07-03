@@ -2,12 +2,14 @@ def merge_(lists):
     result = []
 
     for lst in lists:
-        if lst[0] == '-':
-            result.append(''.join(lst[2:]))
-        elif lst[0] != '-':
-            result.append(lst[1]*lst[0])
+        if lst[0].count('-') > 0:
+            result.append(''.join(lst[1:]))
+        elif lst[0].count('-') == 0:
+            result.append(lst[1]*int(lst[0]))
 
-    return ''.join(result)
+    result = ''.join(result)
+    
+    return result
 
 
 def decode(string):
@@ -17,8 +19,12 @@ def decode(string):
     for letter in string:
 
         try:
-           letter = int(letter)
-           part.append(letter)
+            int(letter)
+            if part == []:
+                part.append(letter)
+            elif part != []:
+                part[-1] +=  str(letter)
+
         except ValueError:
             part.append(letter)
             if letter != '-':
@@ -27,5 +33,5 @@ def decode(string):
                 elif len(part) == 1:
                     result[-1].append(letter)
                 part = []
-    print(string, result)
+ 
     return merge_(result)
