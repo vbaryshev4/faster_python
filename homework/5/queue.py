@@ -1,5 +1,5 @@
 
-class Stack(object):
+class Stack():
     """docstring for Stack"""
     def __init__(self):
         self.stack = []
@@ -12,7 +12,7 @@ class Stack(object):
 
 
 
-class Queue(object):
+class Queue():
     """docstring for Queue"""
     def __init__(self):
         self.queue = []
@@ -26,21 +26,28 @@ class Queue(object):
         return result
 
 
-class Queue_2(object):
+class StackAsQueue(object):
     """docstring for Queue"""
     def __init__(self):
         self.stack_1 = Stack()
         self.stack_2 = Stack()
-        
-    """
-    TODO дописать чтобы применялись методы к экземплярам класс из конструктора
 
     def enqueue(self, elem):
-        self.queue.append(elem)
+        self.stack_1.put(elem)
 
     def dequeue(self):
-        result = self.queue[0] 
-        self.queue = self.queue[1:]
+        self.stack_2.stack = self.stack_1.stack[1:]
+        result = self.stack_1.stack[0]
+        self.stack_1.stack = self.stack_2.stack
+        self.stack_2 = Stack()
         return result
 
-    """
+a = StackAsQueue()
+a.enqueue(1)
+a.enqueue(2)
+a.enqueue(3)
+a.enqueue(4)
+print(a.stack_1.stack)
+print(a.dequeue())
+print(a.stack_1.stack)
+print(a.stack_2.stack)
