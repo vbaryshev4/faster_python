@@ -26,7 +26,7 @@ class Queue():
         return result
 
 
-class StackAsQueue(object):
+class StackAsQueue():
     """docstring for Queue"""
     def __init__(self):
         self.stack_1 = Stack()
