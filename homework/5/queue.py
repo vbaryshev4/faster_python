@@ -2,13 +2,20 @@
 class Stack():
     """docstring for Stack"""
     def __init__(self):
-        self.stack = []
-        
+        self.__stack = []
+    
+    def __str__(self):
+        '''Returns representation of the object'''
+        return "{}({})".format(self.__class__.__name__, self.__stack)
+
+    def is_empty(self):
+        return len(self.__stack) == 0
+
     def put(self, elem):
-        self.stack.append(elem)
+        self.__stack.append(elem)
 
     def pop(self):
-        return self.stack.pop()
+        return self.__stack.pop()
 
 
 
@@ -27,6 +34,7 @@ class Queue():
 
 
 class StackAsQueue():
+
     """docstring for Queue"""
     def __init__(self):
         self.stack_1 = Stack()
@@ -36,28 +44,22 @@ class StackAsQueue():
         self.stack_1.put(elem)
 
     def dequeue(self):
-        
-        for elem in range(len(self.stack_1.stack)):
-            a = self.stack_1.pop()
-            self.stack_2.put(a)
+        if self.stack_2.is_empty():
+            while not self.stack_1.is_empty():
+                elem = self.stack_1.pop()
+                self.stack_2.put(elem)
 
-        result = self.stack_2.pop()
-
-        for elem in range(len(self.stack_2.stack)):
-            a = self.stack_2.pop()
-            self.stack_1.put(a)
-
-        return result
+        return self.stack_2.pop()
 
 a = StackAsQueue()
 a.enqueue(1)
 a.enqueue(2)
 a.enqueue(3)
 a.enqueue(4)
-print(a.stack_1.stack)
+print(a.stack_1)
 print(a.dequeue())
-print(a.stack_1.stack)
-print(a.stack_2.stack)
+print(a.stack_1)
+print(a.stack_2)
 
 '''
 Кирилл Игнатьев, [25.07.18 20:46]
