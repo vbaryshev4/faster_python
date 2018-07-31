@@ -1,14 +1,15 @@
 import time
 from random import randint
+import asyncio
 
-class Scheduler():
+class Scheduler:
     """docstring for Scheduler"""
-    def __init__(self, func):
-        self.func = func
+    def __init__(self):
+        pass
 
-    def delay(self, func, args, seconds):
-        time.sleep(seconds)
-        return func(*args)
+    async def delay(self, func, args, seconds):
+        await asyncio.sleep(seconds)
+        print(func(*args))
         
 if __name__ == '__main__':
 
@@ -24,35 +25,43 @@ if __name__ == '__main__':
     def dev_(a, b):
         return a / b
 
-    funcs = [sum_, minus_, mul_, dev_]
+a = Scheduler()
+ioloop = asyncio.get_event_loop()
+tasks = [ioloop.create_task(a.delay(sum_,[2,2], 3)), ioloop.create_task(a.delay(sum_, [10,10], 1))]
+wait_tasks = asyncio.wait(tasks)
+ioloop.run_until_complete(wait_tasks)
+ioloop.close()
 
-    result = [{'counts':{'True':0, 'False':0}}]
 
-    for i in range(100):
-        case_template = {
-            'object':None, 
-            'function':None, 
-            'args':None,
-            'excpected_result':None,
-            'test_result':None,
-            'std_out':None
-                        }
+    # funcs = [sum_, minus_, mul_, dev_]
 
-        case_template['function'] = funcs[randint(0, len(funcs)-1)]
-        case_template['object'] = Scheduler(case_template['function'])
-        arg_a, arg_b = randint(1, 256), randint(1, 256)
-        case_template['args'] = [arg_a, arg_b]
-        case_template['excpected_result'] = case_template['function'](arg_a, arg_b)
-        delay = 0
-        case_template['test_result'] = case_template['object'].delay(case_template['function'], [arg_a, arg_b], delay)
-        if case_template['excpected_result'] == case_template['test_result']:
-            case_template['std_out'] = True
-            result[0]['counts']['True'] += 1
-        else:
-            case_template['std_out'] = False
-            result[0]['counts']['False'] += 1
+    # result = [{'counts':{'True':0, 'False':0}}]
 
-        result.append(case_template)
+    # for i in range(100):
+    #     case_template = {
+    #         'object':None, 
+    #         'function':None, 
+    #         'args':None,
+    #         'excpected_result':None,
+    #         'test_result':None,
+    #         'std_out':None
+    #                     }
 
-    print(result)
-    print('TESTS: Trues = {0} and Falses = {1}'.format(result[0]['counts']['True'], result[0]['counts']['False']))
+    #     case_template['function'] = funcs[randint(0, len(funcs)-1)]
+    #     case_template['object'] = Scheduler()
+    #     arg_a, arg_b = randint(1, 256), randint(1, 256)
+    #     case_template['args'] = [arg_a, arg_b]
+    #     case_template['expected_result'] = case_template['function'](arg_a, arg_b)
+    #     delay = 0
+    #     case_template['test_result'] = case_template['object'].delay(case_template['function'], [arg_a, arg_b], delay)
+    #     if case_template['expected_result'] == case_template['test_result']:
+    #         case_template['std_out'] = True
+    #         result[0]['counts']['True'] += 1
+    #     else:
+    #         case_template['std_out'] = False
+    #         result[0]['counts']['False'] += 1
+
+    #     result.append(case_template)
+
+    # print(result)
+    # print('TESTS: Trues = {0} and Falses = {1}'.format(result[0]['counts']['True'], result[0]['counts']['False']))
