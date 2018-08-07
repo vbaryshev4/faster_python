@@ -1,11 +1,13 @@
+import collections
+
+
 class LRUCache:
 
 	"""docstring for LRUCache"""
 
 	def __init__(self, n):
 		self.cache_size = n
-		self.keys_log = []
-		self.cache = {}
+		self.cache = collections.OrderedDict()
 	
 	def set(self, key, value):
 
@@ -15,17 +17,14 @@ class LRUCache:
 		# когда кэш достигнет размера n.
 		
 		if len(self.cache) == self.cache_size:
-			key_to_delete = self.keys_log.pop(0)
-			self.cache.pop(key_to_delete)
+			self.cache.popitem(last=False)
 
 		self.cache.update({key:value})
-		self.keys_log.append(key)
 		
 	def get(self, key):
 
 		# возвращает value, соответствующее данному ключу.
-		self.keys_log.remove(key)
-		self.keys_log.append(key)
+
+		self.cache.move_to_end(key, True)
 
 		return self.cache.get(key)
-		
