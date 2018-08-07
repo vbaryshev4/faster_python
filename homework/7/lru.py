@@ -24,5 +24,8 @@ class LRUCache:
 	def get(self, key):
 
 		# возвращает value, соответствующее данному ключу.
+		self.keys_log.remove(key)
+		self.keys_log.append(key)
 
 		return self.cache.get(key)
+		
