@@ -33,7 +33,9 @@ dataset.zip/<vk_user_id>/prt_<unique_photo_id>_<unique_crop_id>.jpg , где
 - vk_user_id – id пользователя в социальной сети vk.com
 - unique_photo_id – внутренний уникальный идентификатор фотографии
 - unique_crop_id – внутренний уникальный идентификатор кропа
+
 Пример одного профиля: в приложении к папке
+
 Описание необходимого отчета
 
 Отчет необходим в свободной форме, должен содержать следующие пункты:
@@ -60,4 +62,5 @@ Artyom Maksimov
 Chief HR Officer
 +7 903 224 55 72
 a.maksimov@visionlabs.ru
+
 
