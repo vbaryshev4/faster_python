@@ -2,7 +2,7 @@ from second import Spiral
 
 if __name__ == '__main__':
     cases = {
-                1:{
+                0:{
                     'matrix':[
                                 [1,2,3],
                                 [4,5,6],
@@ -10,7 +10,7 @@ if __name__ == '__main__':
                             ],
                     'result':[5,4,7,8,9,6,3,2,1]
                 },
-                2:{
+                1:{
                     'matrix':[
                                 [1,2,3,4,5],
                                 [6,7,8,9,10],
@@ -20,7 +20,7 @@ if __name__ == '__main__':
                             ],
                     'result':[13,12,17,18,19,14,9,8,7,6,11,16,21,22,23,24,25,20,15,10,5,4,3,2,1]
                 },
-                3:{
+                2:{
                     'matrix':[
                                 [1,1,1],
                                 [1,1,1],
@@ -28,7 +28,7 @@ if __name__ == '__main__':
                             ],
                     'result':[1,1,1,1,1,1,1,1,1]
                 },
-                4:{
+                3:{
                     'matrix':[
                                 [-1,-1,-1],
                                 [-1,-1,-1],
@@ -36,7 +36,7 @@ if __name__ == '__main__':
                             ],
                     'result':[-1,-1,-1,-1,-1,-1,-1,-1,-1]
                 },
-                5:{
+                4:{
                     'matrix':[
                                 ['i','h','g'],
                                 ['b','a','f'],
@@ -44,14 +44,20 @@ if __name__ == '__main__':
                             ],
                     'result':['a','b','c','d','e','f','g','h','i']
                 },
+                5:{
+                    'matrix':[
+                                [0],
+                            ],
+                    'result':[0]
+                }
             }
     
-    for i in range(1,6):
+    for i in range(len(cases)):
         matrix = cases[i]['matrix']
         item = Spiral(matrix)
         result = item.unspiral_matrix()
         if result == cases[i]['result']:
-            print('OK')
+            print('Passed')
         else:
-            print('False')
+            print('Failed')
 
