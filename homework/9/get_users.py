@@ -1,4 +1,3 @@
-from random import randint
 from time import sleep
 
 
@@ -16,10 +15,10 @@ class User:
 
     def get_photos_links(self):
 
-        if self.user_photos_links == None:
+        if self.user_photos_links is None:
             result = []
 
-            if self.user_albums == None:
+            if self.user_albums is None:
                 self.get_user_albums()
 
             for album in self.user_albums['items']:
@@ -38,7 +37,7 @@ class User:
 
     def get_user_albums(self):
 
-        if self.user_albums == None:
+        if self.user_albums is None:
             albums = self.vkapi.photos.getAlbums(
                 owner_id=self.user_vk_id, 
                 photo_sizes=1, 
@@ -50,7 +49,6 @@ class User:
 
         return self.user_albums
 
-        
 
 class GetUsers:
     """docstring for GetUsers"""
@@ -60,10 +58,9 @@ class GetUsers:
         self.queue_limit = queue_limit
         self.users_photos_count = None
 
+    def get_users(self, vk_city_id=None, city_name=None, sex=None, birth_year=None, users_log=None):
 
-    def get_users(self, vk_city_id=None, city_name=None, sex=None, birth_year=None):
-
-        if self.users == None:
+        if self.users is None:
             result = []
             data = self.vkapi.users.search(
                 count=self.queue_limit, 
@@ -76,15 +73,18 @@ class GetUsers:
 
             for item in data['items']:
                 sleep(0.4)
-                person = User(item['id'], vk_city_id, city_name, self.vkapi)
-                person.get_user_albums()
-                if person.user_photos_count > 10 and person.user_photos_count < 400:
-                    person.get_photos_links()
-                    result.append(person)
+                if item['id'] not in users_log:
+                    person = User(item['id'], vk_city_id, city_name, self.vkapi)
+                    person.get_user_albums()
+                    if person.user_photos_count > 10 and person.user_photos_count < 400:
+                        try:
+                            person.get_photos_links()
+                            result.append(person)
+                        except...:
+                            continue
             
             self.users = result
             self.users_photos_count = sum([i.user_photos_count for i in self.users])
 
         return self.users
-
 

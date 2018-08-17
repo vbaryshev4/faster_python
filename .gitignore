@@ -112,3 +112,6 @@ venv.bak/
 
 #MAC_OS
 .DS_Store
+
+# Security
+credentials.py

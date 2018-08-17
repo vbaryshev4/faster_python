@@ -1,0 +1,11 @@
+1) установить библиотеки
+pip3 install vk opencv-python Pillow
+
+
+2) Сгенерировать файл credentials.py в корне проекта
+Должен содержать переменные: login, password, vk_id
+
+	Пример:
+	login = '+79261112233'
+	password = 'Qwerty'
+	vk_id = '123456'
