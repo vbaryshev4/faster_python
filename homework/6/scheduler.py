@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
 a = Scheduler()
 ioloop = asyncio.get_event_loop()
-tasks = [ioloop.create_task(a.delay(sum_,[2,2], 3)), ioloop.create_task(a.delay(sum_, [10,10], 1))]
+tasks = [ioloop.create_task(a.delay(sum_,[2,2], 4)), ioloop.create_task(a.delay(sum_, [10,10], 10))]
 wait_tasks = asyncio.wait(tasks)
 ioloop.run_until_complete(wait_tasks)
 ioloop.close()

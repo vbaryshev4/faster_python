@@ -9,3 +9,5 @@ pip3 install vk opencv-python Pillow
 	login = '+79261112233'
 	password = 'Qwerty'
 	vk_id = '123456'
+
+Важно: для работы с API VK требуется зарегистрированный проект на странице разработчика VK.

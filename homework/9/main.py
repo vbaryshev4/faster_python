@@ -3,6 +3,7 @@ from control import ProgressAndStatus
 from get_users import GetUsers
 from credentials import login, password, vk_id
 from find_face import get_crops
+import time
 
 
 geo = {
@@ -21,39 +22,34 @@ geo = {
 session = Session(login, password, vk_id)
 progress = ProgressAndStatus()
 users_log = progress.get_users_log()
-
 print('Log:', users_log)
 print('Status:', progress.get_status())
 
 
 def check_status():
     status = progress.get_status()
-    if status['status'] == status['limit']:
-        return True
-    elif status['status'] != status['limit']:
-        return False
+    return status['users_limit'] - status['status']
 
 
-def itter_bunch(users):
-    for user in users.get_users():  
-        
-        if check_status() is False:
+def bunch(data):
+    for item in data:
+        result = get_crops(item)
+        status = progress.get_status()
+        print('Result: ', result, ' Status: ', status)
+
+
+def iter_bunch(users):
+    if check_status() > 0:
+        data = []
+        for user in users.get_users():
             vk_id = user.user_vk_id
             photos = user.get_photos_links()
-            
-            result = get_crops(vk_id, photos)
-            
-            if isinstance(result, dict) and result['crops'] is not 0:
-                print(
-                    'User:', vk_id, 
-                    'Photos added', result['crops'], 
-                    'Progress', progress.get_status()
-                    )
-            else:
-                continue
- 
-        elif check_status() is True:
-            return 'Done'
+            if photos != []:
+                data.append([vk_id, photos])
+        if check_status() >= len(data):
+            bunch(data)
+        else:
+            bunch(data[0:len(data)])
 
 
 def run():
@@ -64,12 +60,15 @@ def run():
             sex = sex_id
             for birth_year_int in range(1980, 2001):
                 birth_year = birth_year_int
-                users = GetUsers(vkapi=session.get_vk_session(), queue_limit=10)
-                users.get_users(vk_city_id, city_name, sex, birth_year)
-                r = itter_bunch(users)
-                if r == 'Done':
-                    return print('Done')       
-
+                if check_status() > 0:
+                    users = GetUsers(vkapi=session.get_vk_session(), queue_limit=10, progress=progress)
+                    users.get_users(vk_city_id, city_name, sex, birth_year)
+                    iter_bunch(users)
+                else:
+                    return 'DONE'
 
 if __name__ == '__main__':
+    run_time = time.time()
     run()
+    print("run finished --- %s seconds ---" % (time.time() - run_time))
+    # run finished --- 6392.627114057541 seconds ---
