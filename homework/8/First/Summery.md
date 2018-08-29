@@ -15,6 +15,11 @@ PAXOS concensus 1989
 
 #### План работы:
 1) Redis туториал 
+    **[SRC]**
+    C - client (producer, consumer)
+    R - redis (master, slave)
+    S - sentinel
+     
 2) Первая версия кода
-3) Raft туториал
-4) Вторая версия с Raft
+3) Sentinel тутуриал
+4) Вторая версия с Sentinel
