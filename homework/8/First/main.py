@@ -3,62 +3,92 @@ import time
 import string
 import random
 import redis
+import uuid
 
-message_speed = 1  # in seconds
+
+message_speed = 0.5
 message_length = 4
-channels = {
-            'messages': 'messages-ch',
-            'votes': 'votes-ch'
-            }
 
 
 class Behavior:
 
     def __init__(self, status):
-        self.status = status
         self.r = redis.StrictRedis(host='localhost', port=6379, db=1)
-        self.queue = 'message_list'
+        self.status = status
+        self.uuid = uuid.uuid4()
+        self.message_queue = 'message_list'
+        self.votes = 'votes_list'
+        self.errors_queue = 'errors_queue'
 
-    def __decode(self, s):
-        return s.decode('utf-8')
-
-    def __push(self, key):
+    def pop_queue(self, queue):
         r = self.r
-        return r.rpush(self.queue, key)
+        if r.llen(queue) != 0:
+            for i in range(r.llen(queue)):
+                m = self.__pop(queue)
+                r.delete(m)
+
+    def vote(self, uuid):
+        r = self.r
+        self.__push(uuid, self.votes, 'candidate')
+        if r.lindex(self.votes, 0) == str(uuid).encode('ascii') and r.get('heartbeat') == None:
+            return True
+        return False
+
+    def __push(self, key, queue, message):
+        r = self.r
+        r.set(key, message)
+        return r.rpush(queue, key)
+
+    def __pop(self, queue):
+        r = self.r
+        m = r.lpop(queue)
+        if m is not None:
+            print('Key:', m, 'Value:', r.get(m))
+            return m
 
     def produce(self):
-        r = self.r
-        while True:
-            time.sleep(message_speed)
-            s = [random.choices(string.ascii_uppercase)[0] for i in range(message_length)]
-            s = ''.join(s)
-            r.set(s, 'published')
-            self.__push(s)
+        time.sleep(message_speed)
+        s = [random.choices(string.ascii_uppercase)[0] for i in range(message_length)]
+        s = ''.join(s)
+        self.__push(s, self.message_queue, 'random')
 
     def consume(self):
-        r = self.r
-        queue = self.queue
-        while True:
-            while (r.llen(queue) != 0):
-                print(r.lpop(queue))
+        error_probability = random.randrange(1, 101)
+        m = self.__pop(self.message_queue)
+        if m != None and error_probability <= 5:
+            print('error_probability {}%'.format(error_probability), 'Key', m)
+            self.__push(m, self.errors_queue, 'error')
 
-    def cadidate_rally(self):
-        ...
+    def run(self):
+        r = self.r
+        while True:
+            if self.status is 'master':
+                print('I am master')
+                self.produce()
+                r.psetex('heartbeat', 1300, 'alive')
+                self.pop_queue(self.votes)
+            elif self.status is 'slave':
+                self.consume()
+                if r.get('heartbeat') == None:
+                    print('No heartbeat')
+                    sleep_time = random.randrange(1, 4)
+                    time.sleep(sleep_time)
+                    if self.vote(self.uuid):
+                        self.status = 'master'
+            elif self.status == 'GetErrors':
+                self.pop_queue(self.errors_queue)
+                print('End of errors')
+                break
 
 
 if __name__ == '__main__':
-
     try:
         status = sys.argv[1]
+        if status != 'GetErrors':
+            status = 'slave'
 
     except IndexError:
         status = 'slave'
-        app = Behavior(status)
 
-    if status == 'master':
-        app = Behavior(status)
-        app.produce()
     app = Behavior(status)
-    app.consume()
-
-
+    app.run()
