@@ -53,11 +53,13 @@ class Behavior:
         self.__push(s, self.message_queue, 'random')
 
     def consume(self):
-        error_probability = random.randrange(1, 101)
         m = self.__pop(self.message_queue)
-        if m != None and error_probability <= 5:
-            print('error_probability {}%'.format(error_probability), 'Key', m)
-            self.__push(m, self.errors_queue, 'error')
+        # if m is not None:
+        if m:
+            error_probability = random.randrange(1, 101)
+            if error_probability <= 5:
+                print('Error with key: {}'.format(m))
+                self.__push(m, self.errors_queue, 'error')
 
     def run(self):
         r = self.r
@@ -69,7 +71,7 @@ class Behavior:
                 self.pop_queue(self.votes)
             elif self.status is 'slave':
                 self.consume()
-                if r.get('heartbeat') == None:
+                if r.get('heartbeat') is None:
                     print('No heartbeat')
                     sleep_time = random.randrange(1, 4)
                     time.sleep(sleep_time)
@@ -92,3 +94,10 @@ if __name__ == '__main__':
 
     app = Behavior(status)
     app.run()
+
+
+'''
+    1. PyCharm же тебе подсказывает, что None нужно проверять как is и is not.  
+    2. Я бы получение случайного числа делал только в случае, если из очереди получилось 
+    что-то достать, чтобы не грузить проц почем зря.
+'''
