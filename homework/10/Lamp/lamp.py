@@ -1,28 +1,6 @@
 from protocol import scheme
+from test import t_cases
 
-'''
-    1. При запуске фонарь должен запрашивать хост:порт (по умолчанию
-    127.0.0.1:9999), подсоединяться по TCP и после этого начать отрабатывать
-    протокол управления.
-     
-    2. При получении данных от сервера фонарь собирает целые команды (type +
-    length + value) и, если type известен, обрабатывает команду, иначе молча ее
-    игнорирует.
-     
-    3. При получении команды ON фонарь включается (отрисовку фонаря оставляем на
-    ваше усмотрение).
-     
-    4. При получении команды OFF фонарь выключается.
-     
-    5. При получении команды COLOR фонарь меняет цвет.
-     
-    6. При завершении работы фонарь корректно закрывает соединение с сервером.
-     
-    7. Реализация фонаря позволяет легко добавлять любые новые команды.
-     
-    Проработанность обработки исключительных ситуаций (ошибки установления
-    соединения, обрывы соединения) — на ваше усмотрение.
-'''
 
 class Lamp:
     def __init__(self):
@@ -32,18 +10,43 @@ class Lamp:
 
     def get_message(self, message):
         while True:
+            length = 0
+            if len(message) < 3:
+                return None
             if message[0] in self.scheme.keys():
                 length = int.from_bytes(message[1:3], byteorder='big')
                 yield (self.scheme[message[0]], message[3:3+length])
-            message = message[3+length:]
-
-
-
+            message = message[3+length:]  # Переделать в виде генератора
 
 
 if __name__ == '__main__':
-    a = Lamp()
-    m = b''.join([b'\x20', b'\x00\x04', b'\xff\xff\xff'])
-    a.get_message(m)
-    m = b''.join([b'\x13', b'\x00\x00'])
-    a.get_message(m)
+    s = """
+CASE# {}
+MESSAGE: {}
+EXPECTED: {}
+PASSED: {}
+    """
+
+    def itter_message(m):
+        result = []
+        a = Lamp()
+        for i in a.get_message(m):
+            result.append(i)
+        return result
+
+
+    for i in t_cases:
+        message = b''.join(t_cases[i]['message'])
+        try:
+            result = itter_message(message)
+            [print('LAMP action:', i) for i in result]
+
+        except:
+            result = False
+        print(s.format(
+                i,
+                t_cases[i]['message'],
+                t_cases[i]['expected_result'],
+                result == t_cases[i]['expected_result']
+                )
+            )
