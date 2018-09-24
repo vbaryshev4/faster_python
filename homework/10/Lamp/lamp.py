@@ -1,11 +1,15 @@
 from protocol import scheme
 from test import t_cases
+import socket
+import sys
 
+lamp_port = 9999
+host = 'localhost'
 
 class Lamp:
     def __init__(self):
-        self.host = '127.0.0.1'
-        self.port = '9999'
+        self.host = host
+        self.port = lamp_port
         self.scheme = scheme
 
     def get_message(self, message):
@@ -19,13 +23,28 @@ class Lamp:
             message = message[3+length:]  # Переделать в виде генератора
 
 
+def consume():
+    sock = socket.socket()
+    sock.bind(('', lamp_port))
+    sock.listen()
+    conn, addr = sock.accept()
+
+    print('connected:', addr)
+
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        # conn.send() # Заготовка под подтверждение о получении сообщения
+        result = []
+        a = Lamp()
+        for i in a.get_message(data):
+            result.append(i)
+        [print('LAMP action:', i) for i in result]
+
+    return conn.close()
+
 if __name__ == '__main__':
-    s = """
-CASE# {}
-MESSAGE: {}
-EXPECTED: {}
-PASSED: {}
-    """
 
     def itter_message(m):
         result = []
@@ -34,19 +53,30 @@ PASSED: {}
             result.append(i)
         return result
 
+    try:
+        if sys.argv[1] == 'test':
+            s = """ 
+                CASE# {} 
+                MESSAGE: {} 
+                EXPECTED: {} 
+                PASSED: {}
+                """
 
-    for i in t_cases:
-        message = b''.join(t_cases[i]['message'])
-        try:
-            result = itter_message(message)
-            [print('LAMP action:', i) for i in result]
+            for i in t_cases:
+                message = b''.join(t_cases[i]['message'])
+                try:
+                    result = itter_message(message)
+                    [print('LAMP action:', i) for i in result]
 
-        except:
-            result = False
-        print(s.format(
-                i,
-                t_cases[i]['message'],
-                t_cases[i]['expected_result'],
-                result == t_cases[i]['expected_result']
-                )
-            )
+                except:
+                    result = False
+                print(s.format(
+                        i,
+                        t_cases[i]['message'],
+                        t_cases[i]['expected_result'],
+                        result == t_cases[i]['expected_result']
+                        )
+                    )
+    except IndexError:
+        while True:
+            consume()  # запуск конзумера Лампы
