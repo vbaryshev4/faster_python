@@ -28,21 +28,20 @@ def consume():
     sock.bind(('', lamp_port))
     sock.listen()
     conn, addr = sock.accept()
-
     print('connected:', addr)
 
     while True:
         data = conn.recv(1024)
         if not data:
             break
-        # conn.send() # Заготовка под подтверждение о получении сообщения
         result = []
         a = Lamp()
         for i in a.get_message(data):
             result.append(i)
         [print('LAMP action:', i) for i in result]
-
+        conn.send(b'got a message') # Заготовка под подтверждение о получении сообщения
     return conn.close()
+
 
 if __name__ == '__main__':
 
@@ -68,7 +67,7 @@ if __name__ == '__main__':
                     result = itter_message(message)
                     [print('LAMP action:', i) for i in result]
 
-                except:
+                except IndexError:
                     result = False
                 print(s.format(
                         i,
@@ -77,6 +76,7 @@ if __name__ == '__main__':
                         result == t_cases[i]['expected_result']
                         )
                     )
+
     except IndexError:
         while True:
             consume()  # запуск конзумера Лампы
