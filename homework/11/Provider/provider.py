@@ -1,5 +1,3 @@
-import redis
-import uuid
 from test import fixer_response_example
 
 '''
@@ -7,28 +5,42 @@ from test import fixer_response_example
         - Передает данные по курсам валют
         - Получает данные
 '''
+'''
+    pg_ctl -D /usr/local/var/postgres start
+    pg_ctl -D /usr/local/var/postgres status
+    psql postgres ...
+    pg_ctl -D /usr/local/var/postgres stop
+    
+'''
+class Provider:
+    def __init__(self):
+        self.sources = [Fixer()]
+
+    def prepare_data_for_db(self, source):
+        data = source.get_test_value()
+        if source.__class__.__name__ == "Fixer":
+            data...
+
+        """
+            TODO
+        """
+
+
+    def get_data(self):
+        data = self.prepare_data_for_db(self.fixer)
+
 class Fixer:
     def __init__(self):
         self.key = "97ee15850fb7fd028cf83cf807cba6e3"
         self.url = "http://data.fixer.io/api/"
         self.query = "http://data.fixer.io/api/latest&base=EUR?access_key=97ee15850fb7fd028cf83cf807cba6e3"
-        self.test_query = None
+        self.test_query = fixer_response_example
 
-    def set_test_value(self, example):
-        self.test_query = example
-
-    def set_test_value(self):
-        try:
-            return self.test_query
-
-class Provider:
-    def __init__(self, status):
-        self.r = redis.StrictRedis(host='localhost', port=1300, db=1)
-        self.status = status
-        self.uuid = uuid.uuid4()
-        self.message_queue = 'message_list'
+    def get_test_value(self):
+        return self.test_query
 
 
-if __name__ == '__main__':
-    f = Fixer(fixer_response_example)
-    print(f)
+# if __name__ == '__main__':
+#
+#     tests...
+

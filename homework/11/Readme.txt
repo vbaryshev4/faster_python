@@ -36,10 +36,11 @@ https://currencylayer.com
 
 ####Схема таблицы:
 Колонки: Cur1, Cur2, Rate, UploadTime.
-Значения: Cur1=text, Cur2=text, Rate=integer, UploadTime=timestamp(дата и время)
+Значения: Cur1=char(3), Cur2=char(3), Rate=float, UploadTime=timestamp(дата и время)
 
 ####Технологический стэк:
 - PostgreSQL
 - Flask
-- Redis
 
+####Библиотеки:
+- psycopg2
