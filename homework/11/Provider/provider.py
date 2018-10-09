@@ -14,20 +14,18 @@ from test import fixer_response_example
 '''
 class Provider:
     def __init__(self):
-        self.sources = [Fixer()]
-
-    def prepare_data_for_db(self, source):
-        data = source.get_test_value()
-        if source.__class__.__name__ == "Fixer":
-            data...
-
-        """
-            TODO
-        """
-
+        self.sources = [Fixer]
 
     def get_data(self):
-        data = self.prepare_data_for_db(self.fixer)
+        for i in self.sources:
+            try:
+                test = i()
+                raw = test.get_test_value()
+                data = test.get_db_values(raw)
+                return data
+            except ValueError:
+                continue
+
 
 class Fixer:
     def __init__(self):
@@ -39,8 +37,14 @@ class Fixer:
     def get_test_value(self):
         return self.test_query
 
+    def get_db_values(self, data_set):
+        curs = ["RUB", "USD", "EUR", "GBP"]
+        base = data_set['base']
+        date = data_set['date']
+        return [[base, i, data_set['rates'][i], date] for i in data_set['rates'] if i in curs]
 
-# if __name__ == '__main__':
-#
-#     tests...
 
+
+if __name__ == '__main__':
+    t = Provider()
+    print(t.get_data())
