@@ -1,5 +1,7 @@
 from test import fixer_response, currencylayer_response
 from credentials import creds
+import time
+
 
 '''
     - Передает данные по курсам валют
@@ -55,5 +57,7 @@ class CurrencyLayer:
 
 
 if __name__ == '__main__':
+    unix_time = int(time.time())
     t = Provider()
-    print(t.get_data())
+    print('TEST STATUS:', t.get_data()[0][3] == unix_time and len(t.get_data()) > 0)
+
