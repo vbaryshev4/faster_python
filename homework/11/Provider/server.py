@@ -1,7 +1,18 @@
+'''
+
+    1) Receives requests from clients
+
+    2) Pulls data from the database
+
+    3) Generates a response
+
+'''
+
 from flask import Flask
 import psycopg2
 import json
 from db_controller import ControlDb
+
 
 app = Flask(__name__)
 
@@ -22,7 +33,7 @@ def get_data_from_db(connection, control):
     return result
 
 
-def connection(cache = []):
+def connection(cache=[]):
     if len(cache) == 0:
         conn = psycopg2.connect("dbname=postgres user=vbaryshev")
         cache.append(conn)
@@ -36,3 +47,11 @@ def return_data():
     out = get_data_from_db(conn, e)
     return json.dumps(out)
 
+
+'''
+
+    Run uWSGI:
+        
+        uwsgi --http 127.0.0.1:5000 --module server:app --processes 4
+        
+'''

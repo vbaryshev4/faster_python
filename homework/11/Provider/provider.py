@@ -1,12 +1,17 @@
+'''
+
+    Gets data from external sources: Fixer or CurrencyLayer.
+
+        If data from Fixer is not available
+        gets data from CurrencyLayer
+
+'''
+
+
 from test import fixer_response, currencylayer_response
 from credentials import creds
-import time
 
 
-'''
-    - Передает данные по курсам валют
-    - Получает данные
-'''
 
 class Provider:
     def __init__(self):
@@ -55,9 +60,4 @@ class CurrencyLayer:
         date = data_set['timestamp']
         return [[source, i[3:], data_set['quotes'][i], date] for i in data_set['quotes'] if i[3:] in curs]
 
-
-if __name__ == '__main__':
-    unix_time = int(time.time())
-    t = Provider()
-    print('TEST STATUS:', t.get_data()[0][3] == unix_time and len(t.get_data()) > 0)
 

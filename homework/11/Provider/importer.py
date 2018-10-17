@@ -1,14 +1,20 @@
+"""
+
+    1) Receives data on exchange rates and checks the validity
+    of the data (Check Integrity)
+    
+    2) Writes or updates data in the database (Transaction)
+
+    3) Supplements the currency graph to the full (Import Algorithm)
+
+"""
+
+
 import psycopg2
 from provider import Provider
 from db_controller import ControlDb
 from server import get_data_from_db
 
-"""
-    Importer
-    - Получает данные по курсам валют и проверяет валидность данных (Check Integrity)
-    - Записывает или обновляет данные в базе(Transaction)
-    - Дополняет граф валют до полного(Import Algorithm)
-"""
 
 def get_data_from_provider_update_db(connection, control):
     # Получаем данные от провайдера
@@ -26,19 +32,22 @@ def get_data_from_provider_update_db(connection, control):
 
 if __name__ == '__main__':
     '''
-        Команды по управлению сервером
-        pg_ctl -D /usr/local/var/postgres start
-        pg_ctl -D /usr/local/var/postgres status
-        Интерактивная консоль базы: psql postgres
-        pg_ctl -D /usr/local/var/postgres stop
+        Run server:
+        
+            1) pg_ctl -D /usr/local/var/postgres start
+            
+            2) pg_ctl -D /usr/local/var/postgres status
+            
+            3)Интерактивная консоль базы: psql postgres
+            
+            4) pg_ctl -D /usr/local/var/postgres stop
 
     '''
     try:
         conn = psycopg2.connect("dbname=postgres user=vbaryshev")
-        # CASES:
         e = ControlDb()
         inside = get_data_from_provider_update_db(conn, e)
         out = get_data_from_db(conn, e)
-        print('TEST STATUS:', inside == out)
+        print('TRANSACTION STATUS:', inside == out)
     finally:
         conn.close()

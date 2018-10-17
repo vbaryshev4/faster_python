@@ -44,3 +44,5 @@ https://currencylayer.com
 
 ####Библиотеки:
 - psycopg2
+
+

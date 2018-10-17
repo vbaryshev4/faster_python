@@ -1,3 +1,11 @@
+'''
+
+    1) Static data emulation from external sources: Fixer or CurrencyLayer
+
+    2) Date and time is dynamic
+
+'''
+
 import time
 
 unix_time = int(time.time())
