@@ -24,6 +24,7 @@ def get_data_from_provider_update_db(connection, control):
     return data
 
 
+
 if __name__ == '__main__':
     '''
         Команды по управлению сервером
