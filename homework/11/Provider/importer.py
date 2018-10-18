@@ -48,6 +48,8 @@ if __name__ == '__main__':
         e = ControlDb()
         inside = get_data_from_provider_update_db(conn, e)
         out = get_data_from_db(conn, e)
+        print(inside)
+        print(out)
         print('TRANSACTION STATUS:', inside == out)
     finally:
         conn.close()

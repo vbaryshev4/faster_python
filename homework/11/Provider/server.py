@@ -14,8 +14,6 @@ import json
 from db_controller import ControlDb
 
 
-app = Flask(__name__)
-
 def get_data_from_db(connection, control):
     # Получаем данные из базы
     cur = connection.cursor()
@@ -25,7 +23,6 @@ def get_data_from_db(connection, control):
     result = []
     while row is not None:
         row = list(row)
-        # row[2] = int(row[2])
         row[3] = int(row[3].timestamp())
         result.append(row)
         row = cur.fetchone()
@@ -35,10 +32,12 @@ def get_data_from_db(connection, control):
 
 def connection(cache=[]):
     if len(cache) == 0:
-        conn = psycopg2.connect("dbname=postgres user=vbaryshev")
-        cache.append(conn)
+        with psycopg2.connect("dbname=postgres user=vbaryshev") as conn:
+            cache.append(conn)
     return cache[0]
 
+
+app = Flask(__name__)
 
 @app.route('/data')
 def return_data():
