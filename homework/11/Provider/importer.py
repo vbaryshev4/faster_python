@@ -21,7 +21,7 @@ def get_data_from_provider_update_db(connection, control):
     # Получаем данные от провайдера
     p = Provider()
     data = p.get_data()
-    build_graph(data)
+    data = build_graph(data)
 
     # Записываем данные в базу
     cur = connection.cursor()
