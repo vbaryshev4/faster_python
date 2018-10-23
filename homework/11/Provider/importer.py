@@ -40,7 +40,7 @@ if __name__ == '__main__':
             
             2) pg_ctl -D /usr/local/var/postgres status
             
-            3)Интерактивная консоль базы: psql postgres
+            3) Интерактивная консоль базы: psql postgres
             
             4) pg_ctl -D /usr/local/var/postgres stop
 
