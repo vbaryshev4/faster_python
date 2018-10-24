@@ -24,5 +24,5 @@ examples = {'case1':
                            'June Qing',
                            'Qing Paul',
                            'Qing Gareth'],
-                 'Output':'June'}
+                 'Output': 'June'}
             }
