@@ -26,5 +26,3 @@ examples = {'case1':
                            'Qing Gareth'],
                  'Output':'June'}
             }
-
-print(examples)
