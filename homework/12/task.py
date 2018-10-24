@@ -64,3 +64,6 @@ Examples:
     June
 
 '''
+
+# Тесты запускать через py.test
+# https://docs.pytest.org/en/latest/
