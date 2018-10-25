@@ -30,16 +30,28 @@ examples = {'case1':
                  'Output': 'June'}
             }
 
-if __name__ == '__main__':
 
-    # TODO:
-    # def test_answer(input_data, expectation):
-    #     assert run(input_data) == expectation
-    
+def test1():
+    input_data = examples['case1']['Input']
+    employees_num = examples['case1']['Input'][0]
+    expected = (examples['case1']['Output'], employees_num)
+    result = run(input_data)
+    assert result == expected
 
-    for key in examples.keys():
-        input_data = examples[key]['Input']
-        employees_num = examples[key]['Input'][0]
-        expected = (examples[key]['Output'], employees_num)
-        result = run(input_data)
-        print(result, expected)
+
+def test2():
+    input_data = examples['case2']['Input']
+    employees_num = examples['case2']['Input'][0]
+    expected = (examples['case2']['Output'], employees_num)
+    result = run(input_data)
+    assert result == expected
+
+
+def test3():
+    input_data = examples['case3']['Input']
+    employees_num = examples['case3']['Input'][0]
+    expected = (examples['case3']['Output'], employees_num)
+    result = run(input_data)
+    assert result == expected
+
+
