@@ -1,3 +1,6 @@
+from main import run
+
+
 examples = {'case1':
                 {'Input': [6,
                            'Hilary',
@@ -26,3 +29,17 @@ examples = {'case1':
                            'Qing Gareth'],
                  'Output': 'June'}
             }
+
+if __name__ == '__main__':
+
+    # TODO:
+    # def test_answer(input_data, expectation):
+    #     assert run(input_data) == expectation
+    
+
+    for key in examples.keys():
+        input_data = examples[key]['Input']
+        employees_num = examples[key]['Input'][0]
+        expected = (examples[key]['Output'], employees_num)
+        result = run(input_data)
+        print(result, expected)

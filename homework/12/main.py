@@ -1,6 +1,3 @@
-from test import examples
-
-
 def build_tree(pairs):
     """
         :param pairs: ['Sarah Fred', 'Sarah Paul', 'Fred Hilary', 'Fred Jenny', 'Jenny James']
@@ -24,10 +21,10 @@ def dfs(tree, search_items):
         :param search_items: ['Hilary', 'James']
         :return: Fred - Mutual director ['Hilary', 'James']
     """
-    popped = []
-    stack = []
+    popped = list()
+    stack = list()
     stack.append([list(tree.keys())[0], 1])
-    while stack != []:
+    while len(stack) != 0:
         try:
             if stack[-1][1] == 2:
                 popped.append(stack[-1])
@@ -39,34 +36,22 @@ def dfs(tree, search_items):
         except KeyError:
             popped.append(stack[-1])
             stack.pop()
-    print('stack', stack)
-    print('popped', popped, '\n')
 
-    s = search_items
+    s = search_items.copy()
     for i in popped:
-        if s == []:
-            return i[0]
+        if len(s) == 0:
+            return i[0], len(popped)
         elif i[0] in s:
             s.remove(i[0])
-            if s == []:
-                if i[0] in list(tree.keys()):
-                    if set(tree[i[0]]).union(set([i[0]])):
-                        return i[0]
+            if len(s) == 0:
+                if i[0] in list(tree.keys()) and set(tree[i[0]] + [i[0]]) == set(search_items):
+                    return i[0], len(popped)
 
 
+def run(input_data):
+    selected_emp = input_data[1:3]
+    pairs = input_data[3:]
+    tree = build_tree(pairs)
+    result = dfs(tree, selected_emp)
+    return result
 
-if __name__ == '__main__':
-    for key in examples.keys():
-        input_data = examples[key]['Input']
-        output_data = examples[key]['Output']
-        employees = input_data[0]
-        selected_emp = input_data[1:3]
-        pairs = input_data[3:]
-        tree = build_tree(pairs)
-        print('pairs', pairs)
-        print('Tree:', tree)
-        print('Searching:', selected_emp)
-        print('Should be:', output_data)
-        result = dfs(tree, selected_emp)
-        print('Result', result)
-        print('\n')
