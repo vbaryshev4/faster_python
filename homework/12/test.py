@@ -27,7 +27,17 @@ examples = {'case1':
                            'June Qing',
                            'Qing Paul',
                            'Qing Gareth'],
-                 'Output': 'June'}
+                 'Output': 'June'},
+            'case4':
+                {'Input': [6,
+                           'Paul',
+                           'James',
+                           'Sarah Fred',
+                           'Sarah Paul',
+                           'Fred Hilary',
+                           'Fred Jenny',
+                           'Jenny James'],
+                 'Output': 'Sarah'},
             }
 
 
