@@ -27,7 +27,17 @@ examples = {'case1':
                            'June Qing',
                            'Qing Paul',
                            'Qing Gareth'],
-                 'Output': 'June'}
+                 'Output': 'June'},
+            'case4':
+                {'Input': [6,
+                           'Paul',
+                           'James',
+                           'Sarah Fred',
+                           'Sarah Paul',
+                           'Fred Hilary',
+                           'Fred Jenny',
+                           'Jenny James'],
+                 'Output': 'Sarah'}
             }
 
 
@@ -51,6 +61,13 @@ def test3():
     input_data = examples['case3']['Input']
     employees_num = examples['case3']['Input'][0]
     expected = (examples['case3']['Output'], employees_num)
+    result = run(input_data)
+    assert result == expected
+
+def test4():
+    input_data = examples['case4']['Input']
+    employees_num = examples['case4']['Input'][0]
+    expected = (examples['case4']['Output'], employees_num)
     result = run(input_data)
     assert result == expected
 

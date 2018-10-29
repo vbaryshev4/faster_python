@@ -13,17 +13,13 @@ def build_tree(pairs):
     return result
 
 
-def dfs(tree, search_items):
+def dfs(tree):
     """
         Idea: Crawling trees in depth
-
-        :param tree: {'Sarah': ['Fred', 'Paul'], 'Fred': ['Hilary', 'Jenny'], 'Jenny': ['James']}
-        :param search_items: ['Hilary', 'James']
-        :return: Fred - Mutual director ['Hilary', 'James']
     """
     popped = list()
     stack = list()
-    stack.append([list(tree.keys())[0], 1])
+    stack.append([list(tree.keys())[0], 1, list(tree.keys())[0]])
     while len(stack) != 0:
         try:
             if stack[-1][1] == 2:
@@ -32,26 +28,32 @@ def dfs(tree, search_items):
             else:
                 stack[-1][1] += 1
                 nodes = tree[stack[-1][0]]
-                [stack.append([i, 1]) for i in nodes]
+                ancestor = stack[-1][-1]
+                [stack.append([i, 1, '/'.join([ancestor, i])]) for i in nodes]
         except KeyError:
             popped.append(stack[-1])
             stack.pop()
+    return popped
 
-    s = search_items.copy()
-    for i in popped:
-        if len(s) == 0:
-            return i[0], len(popped)
-        elif i[0] in s:
-            s.remove(i[0])
-            if len(s) == 0:
-                if i[0] in list(tree.keys()) and set(tree[i[0]] + [i[0]]) == set(search_items):
-                    return i[0], len(popped)
 
+def search_common_ancestor(popped_tree, search_items):
+    print('Popped tree', popped_tree)
+    print('Pair to search', search_items)
+    pair_from_popped_tree = [i for i in popped_tree if i[0] in search_items]
+    print(pair_from_popped_tree)
+    
 
 def run(input_data):
-    selected_emp = input_data[1:3]
+    pair_to_search = input_data[1:3]
     pairs = input_data[3:]
     tree = build_tree(pairs)
-    result = dfs(tree, selected_emp)
+    popped_tree = dfs(tree)
+    result = search_common_ancestor(popped_tree, pair_to_search)
     return result
+
+
+if __name__ == '__main__':
+    from test import examples
+    run(examples['case4']['Input'])
+    # print('Expected:', examples['case4']['Output'])
 
