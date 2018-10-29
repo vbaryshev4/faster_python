@@ -41,7 +41,7 @@ def search_common_ancestor(popped_tree, search_items):
     print('Pair to search', search_items)
     pair_from_popped_tree = [i for i in popped_tree if i[0] in search_items]
     print(pair_from_popped_tree)
-    
+
 
 def run(input_data):
     pair_to_search = input_data[1:3]

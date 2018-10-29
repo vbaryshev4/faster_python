@@ -37,7 +37,7 @@ examples = {'case1':
                            'Fred Hilary',
                            'Fred Jenny',
                            'Jenny James'],
-                 'Output': 'Sarah'}
+                 'Output': 'Sarah'},
             }
 
 
