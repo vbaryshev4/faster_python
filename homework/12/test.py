@@ -1,4 +1,5 @@
 from main import run
+import pytest
 
 
 examples = {'case1':
@@ -41,35 +42,14 @@ examples = {'case1':
             }
 
 
-def test1():
-    input_data = examples['case1']['Input']
-    employees_num = examples['case1']['Input'][0]
-    expected = (examples['case1']['Output'])
+@pytest.mark.parametrize("case", [
+    ("case1",),
+    ("case2",),
+    ("case3",),
+    ("case4",),
+])
+def test1(case):
+    input_data = examples[case]['Input']
+    expected = (examples[case]['Output'])
     result = run(input_data)
     assert result == expected
-
-
-def test2():
-    input_data = examples['case2']['Input']
-    employees_num = examples['case2']['Input'][0]
-    expected = (examples['case2']['Output'])
-    result = run(input_data)
-    assert result == expected
-
-
-def test3():
-    input_data = examples['case3']['Input']
-    employees_num = examples['case3']['Input'][0]
-    expected = (examples['case3']['Output'])
-    result = run(input_data)
-    assert result == expected
-
-def test4():
-    input_data = examples['case4']['Input']
-    employees_num = examples['case4']['Input'][0]
-    expected = (examples['case4']['Output'])
-    result = run(input_data)
-    assert result == expected
-
-
-
