@@ -36,11 +36,18 @@ def dfs(tree):
     return popped
 
 
+def lca(splitted_routes):
+    print(splitted_routes)
+    for node_of_route_1 in reversed(splitted_routes[0]):
+        for node_of_route_2 in reversed(splitted_routes[1]):
+            if node_of_route_1 == node_of_route_2:
+                return node_of_route_1
+
+
 def search_common_ancestor(popped_tree, search_items):
-    print('Popped tree', popped_tree)
-    print('Pair to search', search_items)
-    pair_from_popped_tree = [i for i in popped_tree if i[0] in search_items]
-    print(pair_from_popped_tree)
+    pair_from_popped_tree = [i[-1].split('/') for i in popped_tree if i[0] in search_items]
+    result = lca(pair_from_popped_tree)
+    return result
 
 
 def run(input_data):
@@ -54,6 +61,6 @@ def run(input_data):
 
 if __name__ == '__main__':
     from test import examples
-    run(examples['case4']['Input'])
-    # print('Expected:', examples['case4']['Output'])
-
+    result = run(examples['case4']['Input'])
+    print('Result:', result)
+    print('Expected:', examples['case4']['Output'])

@@ -44,7 +44,7 @@ examples = {'case1':
 def test1():
     input_data = examples['case1']['Input']
     employees_num = examples['case1']['Input'][0]
-    expected = (examples['case1']['Output'], employees_num)
+    expected = (examples['case1']['Output'])
     result = run(input_data)
     assert result == expected
 
@@ -52,7 +52,7 @@ def test1():
 def test2():
     input_data = examples['case2']['Input']
     employees_num = examples['case2']['Input'][0]
-    expected = (examples['case2']['Output'], employees_num)
+    expected = (examples['case2']['Output'])
     result = run(input_data)
     assert result == expected
 
@@ -60,15 +60,16 @@ def test2():
 def test3():
     input_data = examples['case3']['Input']
     employees_num = examples['case3']['Input'][0]
-    expected = (examples['case3']['Output'], employees_num)
+    expected = (examples['case3']['Output'])
     result = run(input_data)
     assert result == expected
 
 def test4():
     input_data = examples['case4']['Input']
     employees_num = examples['case4']['Input'][0]
-    expected = (examples['case4']['Output'], employees_num)
+    expected = (examples['case4']['Output'])
     result = run(input_data)
     assert result == expected
+
 
 
