@@ -42,12 +42,7 @@ examples = {'case1':
             }
 
 
-@pytest.mark.parametrize("case", [
-    "case1",
-    "case2",
-    "case3",
-    "case4",
-])
+@pytest.mark.parametrize("case", ["case1", "case2", "case3", "case4"])
 def test1(case):
     input_data = examples[case]['Input']
     expected = (examples[case]['Output'])
