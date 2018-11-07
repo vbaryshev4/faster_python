@@ -15,16 +15,16 @@ def find_way(tree, start, destination):
     result = tree[start]
     heap = []
     [heapq.heappush(heap, (result[i], i)) for i in result]
-    h = heapq.heappop(heap)
-    print(h)
+    h = (0, destination-1)
     while h[1] != destination:
+        print('heap', heap)
         h = heapq.heappop(heap)
-        # h(1) - вершина
-        # h(0) - вес ребра
-        print(h)
-
-    print(tree, start, destination)
-    print(result, heap)
+        if h[1] in tree.keys():
+            [heapq.heappush(heap, i[::-1]) for i in tree[h[1]].items()]
+            [result.update({i[0]: h[0]+i[1]}) for i in tree[h[1]].items() if h[0]+i[1] < result[i[0]]]
+    # print('tree start destination', tree, start, destination)
+    # print('result', result)
+    return result[destination]
 
 
 
@@ -41,10 +41,12 @@ def build_tree(data):
 
 if __name__ == "__main__":
     for key in examples.keys():
+        output = examples[key]['Output']
         vertices, edges = examples[key]['Input'][0]
         raw_tree = examples[key]['Input'][1:-1]
         start, destination = examples[key]['Input'][-1]
         tree = build_tree(raw_tree)
-        find_way(tree, start, destination)
-        break
+        print('tree', tree)
+        result = find_way(tree, start, destination)
+        print('output', output, 'result', result, '\n')
 
