@@ -12,20 +12,31 @@ import heapq
 
 
 def find_way(tree, start, destination):
-    result = tree[start]
-    heap = []
-    [heapq.heappush(heap, (result[i], i)) for i in result]
-    h = (0, destination-1)
+    if start in tree.keys():
+        result = tree[start]
+    else:
+        return -1
+    heap = [] # each element = (edge_weight, vertice)
+    [heapq.heappush(heap, i) for i in [(r, result[r])[::-1] for r in result]]
+    h = (0, start)
+    debug_counter = 0
+    print('vertice = {0}, destination = {1}, heap = {2}'.format(h[1], destination, heap))
     while h[1] != destination:
-        print('heap', heap)
         h = heapq.heappop(heap)
         if h[1] in tree.keys():
             [heapq.heappush(heap, i[::-1]) for i in tree[h[1]].items()]
-            [result.update({i[0]: h[0]+i[1]}) for i in tree[h[1]].items() if h[0]+i[1] < result[i[0]]]
-    # print('tree start destination', tree, start, destination)
-    # print('result', result)
-    return result[destination]
+            print('vertice = {0}, destination = {1}, heap = {2}'.format(h[1], destination, heap))
+            for i in tree[h[1]].items():
+                if i[0] in result.keys():
+                    if h[0] + i[1] < result[i[0]]:
+                        result.update({i[0]: h[0] + i[1]})
+                else:
+                    result.update({i[0]: h[0] + i[1]})
+                debug_counter += 1
+                if debug_counter == 10:
+                    return None
 
+    return result[destination]
 
 
 def build_tree(data):
@@ -38,15 +49,15 @@ def build_tree(data):
     return result
 
 
-
 if __name__ == "__main__":
     for key in examples.keys():
-        output = examples[key]['Output']
-        vertices, edges = examples[key]['Input'][0]
-        raw_tree = examples[key]['Input'][1:-1]
-        start, destination = examples[key]['Input'][-1]
-        tree = build_tree(raw_tree)
-        print('tree', tree)
-        result = find_way(tree, start, destination)
-        print('output', output, 'result', result, '\n')
+        if key == 'case2': # Only debug
+            output = examples[key]['Output']
+            vertices, edges = examples[key]['Input'][0]
+            raw_tree = examples[key]['Input'][1:-1]
+            start, destination = examples[key]['Input'][-1]
+            tree = build_tree(raw_tree)
+            print('tree', tree)
+            result = find_way(tree, start, destination)
+            print('output', output, 'result', result, '\n\n\n\n')
 
