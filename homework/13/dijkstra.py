@@ -19,23 +19,22 @@ def find_way(tree, start, destination):
     heap = [] # each element = (edge_weight, vertice)
     [heapq.heappush(heap, i) for i in [(r, result[r])[::-1] for r in result]]
     h = (0, start)
-    debug_counter = 0
-    print('vertice = {0}, destination = {1}, heap = {2}'.format(h[1], destination, heap))
-    while h[1] != destination:
-        h = heapq.heappop(heap)
+    while heap != []:
         if h[1] in tree.keys():
-            [heapq.heappush(heap, i[::-1]) for i in tree[h[1]].items()]
-            print('vertice = {0}, destination = {1}, heap = {2}'.format(h[1], destination, heap))
+            print('vertice = {0}, destination = {1}, h = {4}, heap = {2}, result={3}'.format(h[1], destination, heap, result, h))
             for i in tree[h[1]].items():
                 if i[0] in result.keys():
-                    if h[0] + i[1] < result[i[0]]:
-                        result.update({i[0]: h[0] + i[1]})
+                    if result[i[0]] + i[1] < result[i[0]]:
+                        print('Added key to result', {i[0]: h[0] + i[1]})
+                        print('Pushed reversed pair to heap', i[::-1])
+                        result.update({i[0]: result[i[0]] + i[1]})
+                        heapq.heappush(heap, i[::-1])
                 else:
+                    print('Added key to result', {i[0]: h[0] + i[1]})
+                    print('Pushed reversed pair to heap', i[::-1])
                     result.update({i[0]: h[0] + i[1]})
-                debug_counter += 1
-                if debug_counter == 10:
-                    return None
-
+                    heapq.heappush(heap, i[::-1])
+        h = heapq.heappop(heap)
     return result[destination]
 
 
@@ -51,13 +50,14 @@ def build_tree(data):
 
 if __name__ == "__main__":
     for key in examples.keys():
-        if key == 'case2': # Only debug
-            output = examples[key]['Output']
-            vertices, edges = examples[key]['Input'][0]
-            raw_tree = examples[key]['Input'][1:-1]
-            start, destination = examples[key]['Input'][-1]
-            tree = build_tree(raw_tree)
-            print('tree', tree)
-            result = find_way(tree, start, destination)
-            print('output', output, 'result', result, '\n\n\n\n')
+        output = examples[key]['Output']
+        vertices, edges = examples[key]['Input'][0]
+        raw_tree = examples[key]['Input'][1:-1]
+        start, destination = examples[key]['Input'][-1]
+        tree = build_tree(raw_tree)
+        print('tree', tree)
+        result = find_way(tree, start, destination)
+        print('output', output, 'result', result, '\n\n\n\n')
 
+
+''.join(str(ord(x))[2:] for x in '48%65%6c%6c%6f%20%57%6f%72%6c%64%21')
