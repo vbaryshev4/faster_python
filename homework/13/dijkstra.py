@@ -56,8 +56,7 @@ if __name__ == "__main__":
         start, destination = examples[key]['Input'][-1]
         tree = build_tree(raw_tree)
         print('tree', tree)
-        result = find_way(tree, start, destination)
-        print('output', output, 'result', result, '\n\n\n\n')
 
 
-''.join(str(ord(x))[2:] for x in '48%65%6c%6c%6f%20%57%6f%72%6c%64%21')
+
+
