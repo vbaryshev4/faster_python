@@ -7,30 +7,25 @@
 
 '''
 
+
 from test_dijkstra import examples
 import math
 
 
 def find_way(tree, vertices, start, destination):
     cheking_list = {i: {'known': False, 'cost': math.inf} for i in vertices}
-    # cheking_list = {i: {'known': False, 'cost': math.inf, 'path': -1} for i in vertices}
     if start in tree.keys():
         cheking_list[start]['cost'] = 0
-        # cheking_list[start]['path'] = 0
     else:
         return -1
     while False in set(cheking_list[i]['known'] for i in cheking_list):
         cursor = {i: cheking_list[i]['cost'] for i in cheking_list if cheking_list[i]['known'] == False}
         cursor = min(cursor, key=cursor.get)
         cheking_list[cursor]['known'] = True
-        # print(cursor)
         if cursor in tree.keys():
             for i in tree[cursor]:
                 if cheking_list[i]['cost'] > cheking_list[cursor]['cost'] + tree[cursor][i]:
                     cheking_list[i]['cost'] = cheking_list[cursor]['cost'] + tree[cursor][i]
-                    # cheking_list[i]['path'] = tree[cursor][i]
-
-    # print('start', start, 'destination', destination, 'result', cheking_list, '\n')
     return cheking_list[destination]['cost']
 
 

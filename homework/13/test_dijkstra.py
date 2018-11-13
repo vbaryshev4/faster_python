@@ -2,6 +2,9 @@
 # import pytest
 
 
+
+
+
 examples = {
             'case1': {
                 'Input': [
@@ -68,5 +71,20 @@ examples = {
                     (1, 4)
                 ],
                 'Output': 20
+            },
+            'case7': {
+                'Input': [
+                    (2, 0),
+                    (1, 2)
+                ],
+                'Output': -1
+            },
+            'case8': {
+                'Input': [
+                    (3, 1),
+                    [2, 3, 1],
+                    (1, 1)
+                ],
+                'Output': -1
             },
 }
