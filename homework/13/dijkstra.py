@@ -8,34 +8,30 @@
 '''
 
 from test_dijkstra import examples
-import heapq
+import math
 
 
-def find_way(tree, start, destination):
+def find_way(tree, vertices, start, destination):
+    cheking_list = {i: {'known': False, 'cost': math.inf} for i in vertices}
+    # cheking_list = {i: {'known': False, 'cost': math.inf, 'path': -1} for i in vertices}
     if start in tree.keys():
-        result = tree[start]
+        cheking_list[start]['cost'] = 0
+        # cheking_list[start]['path'] = 0
     else:
         return -1
-    heap = [] # each element = (edge_weight, vertice)
-    [heapq.heappush(heap, i) for i in [(r, result[r])[::-1] for r in result]]
-    h = (0, start)
-    while heap != []:
-        if h[1] in tree.keys():
-            print('vertice = {0}, destination = {1}, h = {4}, heap = {2}, result={3}'.format(h[1], destination, heap, result, h))
-            for i in tree[h[1]].items():
-                if i[0] in result.keys():
-                    if result[i[0]] + i[1] < result[i[0]]:
-                        print('Added key to result', {i[0]: h[0] + i[1]})
-                        print('Pushed reversed pair to heap', i[::-1])
-                        result.update({i[0]: result[i[0]] + i[1]})
-                        heapq.heappush(heap, i[::-1])
-                else:
-                    print('Added key to result', {i[0]: h[0] + i[1]})
-                    print('Pushed reversed pair to heap', i[::-1])
-                    result.update({i[0]: h[0] + i[1]})
-                    heapq.heappush(heap, i[::-1])
-        h = heapq.heappop(heap)
-    return result[destination]
+    while False in set(cheking_list[i]['known'] for i in cheking_list):
+        cursor = {i: cheking_list[i]['cost'] for i in cheking_list if cheking_list[i]['known'] == False}
+        cursor = min(cursor, key=cursor.get)
+        cheking_list[cursor]['known'] = True
+        # print(cursor)
+        if cursor in tree.keys():
+            for i in tree[cursor]:
+                if cheking_list[i]['cost'] > cheking_list[cursor]['cost'] + tree[cursor][i]:
+                    cheking_list[i]['cost'] = cheking_list[cursor]['cost'] + tree[cursor][i]
+                    # cheking_list[i]['path'] = tree[cursor][i]
+
+    # print('start', start, 'destination', destination, 'result', cheking_list, '\n')
+    return cheking_list[destination]['cost']
 
 
 def build_tree(data):
@@ -50,13 +46,13 @@ def build_tree(data):
 
 if __name__ == "__main__":
     for key in examples.keys():
-        output = examples[key]['Output']
-        vertices, edges = examples[key]['Input'][0]
+        expected_output = examples[key]['Output']
+        count_vertices, edges = examples[key]['Input'][0]
         raw_tree = examples[key]['Input'][1:-1]
         start, destination = examples[key]['Input'][-1]
         tree = build_tree(raw_tree)
+        vertices = [i[0:2] for i in raw_tree]
+        vertices = set([y for x in vertices for y in x])
         print('tree', tree)
-
-
-
-
+        result = find_way(tree, vertices, start, destination)
+        print(result, expected_output)
