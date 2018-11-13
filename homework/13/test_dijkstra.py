@@ -56,7 +56,7 @@ examples = {
                     [4, 3, 12],
                     (1, 3)
                 ],
-                'Output': 3
+                'Output': 32
             },
             'case6': {
                 'Input': [
@@ -67,6 +67,6 @@ examples = {
                     [4, 3, 12],
                     (1, 4)
                 ],
-                'Output': 15
+                'Output': 20
             },
 }
