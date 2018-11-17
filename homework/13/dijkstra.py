@@ -24,8 +24,9 @@ def find_way(tree, vertices, start, destination):
         cheking_list[cursor]['known'] = True
         if cursor in tree.keys():
             for i in tree[cursor]:
-                if cheking_list[i]['cost'] > cheking_list[cursor]['cost'] + tree[cursor][i]:
-                    cheking_list[i]['cost'] = cheking_list[cursor]['cost'] + tree[cursor][i]
+                sum = cheking_list[cursor]['cost'] + tree[cursor][i]
+                if cheking_list[i]['cost'] > sum:
+                    cheking_list[i]['cost'] = sum
     return cheking_list[destination]['cost']
 
 
