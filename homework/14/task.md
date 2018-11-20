@@ -17,5 +17,5 @@ HTTP/1.1 200 OK
 - http://packages.python.org/WsgiService/
 
 #####Пакет для распознавания языка:
-https://pypi.org/project/langdetect/
-https://www.slideshare.net/shuyo/language-detection-library-for-java
+- https://pypi.org/project/langdetect/
+- https://www.slideshare.net/shuyo/language-detection-library-for-java
