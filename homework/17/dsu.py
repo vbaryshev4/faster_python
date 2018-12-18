@@ -1,14 +1,3 @@
-# def sort_odds(itterable_obj):
-#     return [i for i in itterable_obj if i % 2 == 0]
-#
-# a = [1, 2, 3, 4]
-# result = sort_odds(a)
-# print(result)
-#
-# a = [1, 2, 3, 4]
-# print([i for i in a if i % 2 == 0])
-
-
 from test import cases
 
 
@@ -24,7 +13,6 @@ class DisjointSets:
             x = self.parents[x]
         indexes.append(x)
         return indexes
-        # return [x]
 
     def union(self, x, y):
         root_x = self.find(x)
@@ -33,6 +21,7 @@ class DisjointSets:
             for i in root_y:
                 if self.parents[i] != root_x[0]:
                     self.parents[i] = root_x[0]
+
 
 if __name__ == "__main__":
     for i in cases:
