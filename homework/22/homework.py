@@ -3,10 +3,12 @@ from bisect import bisect_left
 
 def find_index(lst, elem):
     index = bisect_left(lst, elem)
-    if len(lst) != 0:
+    try:
         if lst[index] == elem:
             return index
-    else:
+        else:
+            return None
+    except IndexError:
         return None
 
 
