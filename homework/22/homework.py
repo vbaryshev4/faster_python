@@ -27,13 +27,17 @@ if __name__ == '__main__':
                 4: {
                     'input': ([], 1),
                     'output': None
-                }
+                },
+                5: {
+                    'input': ([0, 10, 20, 500, 700], 701),
+                    'output': None
+                },
     }
 
-print(tests, '\n')
-for key in tests.keys():
-    lst, val = tests[key]['input']
-    expected = tests[key]['output']
-    result = find_index(lst, val)
-    print('Result:', result, 'Expected', expected)
-    print('\n')
+    print(tests, '\n')
+    for key in tests.keys():
+        lst, val = tests[key]['input']
+        expected = tests[key]['output']
+        result = find_index(lst, val)
+        print('Result:', result, 'Expected', expected)
+        print('\n')
